@@ -29,7 +29,7 @@ users_source AS (
         created_at
     FROM {{ ref('stg_users') }}
 )
-
+--this
 SELECT
     orders_source.order_id,
     orders_source.user_id,
