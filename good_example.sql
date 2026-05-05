@@ -29,7 +29,11 @@ users_source AS (
         created_at
     FROM {{ ref('stg_users') }}
 )
+<<<<<<< HEAD
 ---the latest of them
+=======
+--ignore this thing too
+>>>>>>> 2866459ac07f96acf756bd69e4cd36e6a9e094a2
 SELECT
     orders_source.order_id,
     orders_source.user_id,
