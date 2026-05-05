@@ -11,7 +11,7 @@ user_src as (
     select *
     from raw.users
 )
-
+-- this is new for review
 select
     o.id
     ,o.status
