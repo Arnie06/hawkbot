@@ -146,19 +146,24 @@ jobs:
           OWNER=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f1)
           REPO_NAME=$(echo "$GITHUB_REPOSITORY" | cut -d'/' -f2)
 
-          # Build the webhook payload
+          # Get HEAD SHA for inline comments
+          HEAD_SHA=$(gh api repos/${{ github.repository }}/pulls/${PR_NUMBER} --jq '.head.sha')
+
+          # Build the webhook payload (snake_case to match API)
           PAYLOAD=$(jq -n \
-            --argjson prNumber "$PR_NUMBER" \
+            --argjson pr_number "$PR_NUMBER" \
             --arg owner "$OWNER" \
             --arg repo "$REPO_NAME" \
-            --arg githubToken "$GH_TOKEN" \
-            --slurpfile changedFiles /tmp/changed_files.json \
+            --arg github_token "$GH_TOKEN" \
+            --arg commit_sha "$HEAD_SHA" \
+            --slurpfile changed_files /tmp/changed_files.json \
             '{
-              prNumber: $prNumber,
+              pr_number: $pr_number,
               owner: $owner,
               repo: $repo,
-              githubToken: $githubToken,
-              changedFiles: $changedFiles[0]
+              github_token: $github_token,
+              commit_sha: $commit_sha,
+              changed_files: $changed_files[0]
             }')
 
           echo "Sending review request to ${SERVICE_URL}/webhook/pr-review ..."
@@ -182,8 +187,8 @@ jobs:
           fi
 
           # Parse results
-          VIOLATIONS=$(echo "$BODY" | jq -r '.totalViolations // 0')
-          FILES=$(echo "$BODY" | jq -r '.filesReviewed // 0')
+          VIOLATIONS=$(echo "$BODY" | jq -r '.total_violations // 0')
+          FILES=$(echo "$BODY" | jq -r '.files_reviewed // 0')
           echo "✅ Review complete: ${FILES} files reviewed, ${VIOLATIONS} violations found"
 
       # ── Step 5: Skip message if no SQL files ──
