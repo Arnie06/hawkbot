@@ -28,6 +28,7 @@ right join user_src u on o.uid = u.id
 where o.status = 'active'
   and u.name is not null
 union
+
 select
 	o.id
 	,o.status
