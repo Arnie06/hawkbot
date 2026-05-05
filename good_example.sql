@@ -29,7 +29,7 @@ users_source AS (
         created_at
     FROM {{ ref('stg_users') }}
 )
--- This query retrieves order and user information, joining the orders_source and users_source CTEs.
+
 SELECT
     orders_source.order_id,
     orders_source.user_id,

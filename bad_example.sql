@@ -11,7 +11,7 @@ user_src as (
     select *
     from raw.users
 )
--- this is a comment that violates the styling rules
+
 select
     o.id
     ,o.status
