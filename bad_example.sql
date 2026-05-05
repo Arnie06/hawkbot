@@ -11,7 +11,7 @@ user_src as (
     select *
     from raw.users
 )
-
+-- ignore this thing
 select
     o.id
     ,o.status
