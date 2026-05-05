@@ -75,8 +75,13 @@ jobs:
           BASE_SHA=$(echo "$PR_DATA" | jq -r '.base.sha')
           HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head.sha')
 
-          # Get list of changed files
-          FILES_JSON=$(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate | jq -c '.')
+          # Get list of changed files (flatten paginated arrays into one)
+          FILES_JSON=$(gh api repos/${REPO}/pulls/${PR_NUMBER}/files --paginate | jq -s 'add // []')
+
+          # Debug: show all filenames returned by GitHub
+          echo "--- All changed files in PR ---"
+          echo "$FILES_JSON" | jq -r '.[].filename'
+          echo "--- Total files: $(echo "$FILES_JSON" | jq 'length') ---"
 
           # Filter for SQL files only
           SQL_FILES=$(echo "$FILES_JSON" | jq -c '[.[] | select(.filename | test("\\.sql$"; "i"))]')
