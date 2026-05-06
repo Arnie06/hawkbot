@@ -174,7 +174,7 @@ jobs:
           echo "Sending review request to ${SERVICE_URL}/webhook/pr-review ..."
 
           # POST to the review service
-          RESPONSE=$(curl -s -w "\n%{http_code}" \
+          RESPONSE=$(curl -sL -w "\n%{http_code}" \
             -X POST "${SERVICE_URL}/webhook/pr-review" \
             -H "Content-Type: application/json" \
             -H "X-Webhook-Token: ${PR_REVIEW_TOKEN}" \
