@@ -1,6 +1,6 @@
 -- bad_example.sql
 -- This file intentionally violates the hawkbot.md styling rules.
--- Use it to test the PR review service.
+-- Use it to test the PR review service. More text
 
 with order_src as (
     select *
